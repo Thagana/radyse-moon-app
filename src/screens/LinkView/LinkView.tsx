@@ -5,15 +5,16 @@ import * as WebBrowser from 'expo-web-browser';
 
 import styles from './LinkView.styles';
 type Props = {
-  route: {
+  route?: {
     params: {
       url: string;
     };
   };
 };
 
-const LinkView = ({route}: Props) => {
-  const {url} = route.params;
+const LinkView = (props: Props) => {
+  const { route } = props;
+  const {url} = route!.params;
   const animation = React.useRef(null);
 
   const openBrowser = React.useCallback(async () => {

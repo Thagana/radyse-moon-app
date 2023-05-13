@@ -1,18 +1,35 @@
 import * as React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 /** Screen */
 import HomeStack from "./HomeStack/HomeStack";
 import ProfileStack from "./ProfileStack";
 
-const Drawer = createDrawerNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 const TabScreen = () => {
   return (
-    <Drawer.Navigator initialRouteName="Feed">
-      <Drawer.Screen name="Feed" component={HomeStack} />
-      <Drawer.Screen name="Profile" component={ProfileStack} />
-    </Drawer.Navigator>
+    <Tab.Navigator initialRouteName="Feed">
+      <Tab.Screen
+        name="Feed"
+        component={HomeStack}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <SimpleLineIcons name="feed" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStack}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="user" size={24} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 

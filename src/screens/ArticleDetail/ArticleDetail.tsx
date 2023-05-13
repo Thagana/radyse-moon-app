@@ -4,10 +4,10 @@ import styles from './ArticleDetails.styles';
 import moment from 'moment';
 
 type Props = {
-  navigation: {
+  navigation?: {
     navigate(param: string): void;
   };
-  route: {
+  route?: {
     params: {
       urlToImage: string;
       title: string;
@@ -19,7 +19,8 @@ type Props = {
   };
 };
 
-function ArticleDetail({ route }: Props) {
+function ArticleDetail(props: Props) {
+  const { route } = props
   const {
     title,
     description,
@@ -27,7 +28,7 @@ function ArticleDetail({ route }: Props) {
     source,
     publishedAt,
     url,
-  } = route.params;
+  } = route!.params;
   const [thumb, setThumb] = React.useState('');
 
   const fetchThumb = React.useCallback(async () => {

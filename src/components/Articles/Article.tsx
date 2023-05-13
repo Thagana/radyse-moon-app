@@ -32,7 +32,7 @@ const Article = (props: Props) => {
     <TouchableOpacity style={styles.card} onPress={handleNavigate}>
       <ImageView image={urlToImage} />
       <View style={styles.content}>
-        <View id={`item.${item.urlToImage}.title`}>
+        <View>
           <Text style={styles.headerText} lineBreakMode="tail">
             {title}
           </Text>
