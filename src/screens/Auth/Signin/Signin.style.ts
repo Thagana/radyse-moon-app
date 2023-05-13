@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     height: hp(8),
     padding: wp(4),
     margin: wp(1),
-    placeholderColor: '#000',
     color: '#000',
   },
   googleButton: {
