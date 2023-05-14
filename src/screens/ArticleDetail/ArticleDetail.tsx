@@ -54,7 +54,7 @@ function ArticleDetail(props: Props) {
 
   return (
     <ScrollView style={styles.container}>
-      <View id={`item.${urlToImage}.image`}>
+      <View>
         <Image
           source={{ uri: urlToImage }}
           style={styles.image}
@@ -62,7 +62,7 @@ function ArticleDetail(props: Props) {
         />
       </View>
       <View>
-        <View id={`item.${urlToImage}.title`}>
+        <View>
           <Text style={styles.titleText}>{title}</Text>
         </View>
         <View>
