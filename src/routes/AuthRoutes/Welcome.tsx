@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import SignIn from '../../screens/Auth/Signin/SignIn';
 import Verify from '../../screens/Auth/Verify';
+import SignUp from '../../screens/Auth/Signup/SignUp';
 
 /** RootHomeStack */
 const RootStack = createStackNavigator();
@@ -14,7 +15,7 @@ export default function Welcome() {
         headerShown: false,
       }}>
       <RootStack.Screen name="signin" component={SignIn} />
-      <RootStack.Screen name="verify" component={Verify} />
+      <RootStack.Screen name="signup" component={SignUp} />
     </RootStack.Navigator>
   );
 }

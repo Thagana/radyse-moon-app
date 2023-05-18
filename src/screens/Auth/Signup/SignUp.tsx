@@ -1,8 +1,8 @@
 import * as React from "react";
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { showMessage } from "react-native-flash-message";
-import styles from "./Signin.style";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import styles from "./SignUp.style";
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { FormValidator } from "../../../helpers/FormValidator";
 import Loading from "../../../components/Loading";
 
@@ -16,7 +16,7 @@ type STATUS_MESSAGES = "LOADING" | "FAILED" | "ERROR" | "SUCCESS" | "IDLE";
 
 const auth = getAuth();
 
-export default function SignIn(props: Props) {
+export default function SignUp(props: Props) {
   const { navigation } = props;
   const [STATE_MESSAGE, setStateMessage] =
     React.useState<STATUS_MESSAGES>("IDLE");
@@ -44,8 +44,8 @@ export default function SignIn(props: Props) {
 
       setStateMessage("LOADING");
 
-      await signInWithEmailAndPassword(auth, email, password);
-
+      await createUserWithEmailAndPassword(auth, email, password);
+      navigation.navigate("signin");
     } catch (error: any) {
       console.log(error);
       showMessage({
@@ -57,7 +57,7 @@ export default function SignIn(props: Props) {
   };
 
   const handleNavigation = () => {
-    navigation.navigate("signup");
+    navigation.navigate("login");
   };
 
   return (
@@ -104,7 +104,7 @@ export default function SignIn(props: Props) {
             </View>
             <View>
               <TouchableOpacity onPress={handleNavigation}>
-                <Text style={styles.verifyCode}>Sign Up?</Text>
+                <Text style={styles.verifyCode}>Sign In?</Text>
               </TouchableOpacity>
             </View>
           </View>
