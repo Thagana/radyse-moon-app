@@ -1,23 +1,26 @@
 import * as React from "react";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-
-const auth = getAuth();
+import { User } from "firebase/auth";
+import { auth } from '../config/firebase';
+import { useStoreActions, useStoreState } from "easy-peasy";
+import { Model } from '../store/model';
 
 export function useAuth() {
   const [user, setUser] = React.useState<User>();
+
+  const updateUser = useStoreActions<Model>((action) => action.updateUser)
+  
   React.useEffect(() => {
-    const unsubscribeFromAuthStatuChanged = onAuthStateChanged(auth, (user) => {
+    const unsubscribeFromAuthStatusChanged = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        setUser(user);
+        const payload = user as unknown as User
+        
+        setUser(payload);
       } else {
-        // User is signed out
         setUser(undefined);
       }
     });
 
-    return unsubscribeFromAuthStatuChanged;
+    return unsubscribeFromAuthStatusChanged;
   }, []);
 
   return {

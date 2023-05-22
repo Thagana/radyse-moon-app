@@ -67,6 +67,7 @@ const Home = (props: Props) => {
     try {
       if (connected) {
         const {success, data} = await headLineNews();
+        console.log(success, data);
         if (mounted.current) {
           if (success) {
             if (data.length === 0) {

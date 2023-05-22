@@ -38,6 +38,10 @@ class Server {
   static async searchNews(term: string) {
     return Axios.post('/news/search', {term});
   }
+
+  static async createDefaultSettings(user: any) {
+    return Axios.post('/user/default-settings', {user});
+  }
 }
 
 export default Server;

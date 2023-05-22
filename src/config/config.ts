@@ -1,7 +1,5 @@
-import env from './secrets';
-
 const config = {
-  APPLICATION_URL: env.API_URL,
+  APPLICATION_URL: 'https://93e6e3a608e5.ngrok.app',
 };
 
 export default config;

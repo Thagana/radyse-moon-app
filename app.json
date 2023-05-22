@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "radyse-moon-app",
+    "slug": "radyse-moon-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }, 
+    "extra": {
+      "apiKey": "AIzaSyDQDqstgbwHz_7ed4CV9nwc0Oy2meX-qIQ",
+      "authDomain": "radyse-moon-ae1c8.firebaseapp.com",
+      "projectId": "radyse-moon-ae1c8",
+      "storageBucket": "radyse-moon-ae1c8.appspot.com",
+      "messagingSenderId": "115264037242",
+      "appId": "1:115264037242:web:9eb434fe9aad8f1229f6c3",
+      "measurementId": "G-Y84ELTES4Y"
+    }
+  }
+}

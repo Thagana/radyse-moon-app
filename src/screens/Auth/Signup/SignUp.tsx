@@ -2,9 +2,14 @@ import * as React from "react";
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import styles from "./SignUp.style";
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
 import { FormValidator } from "../../../helpers/FormValidator";
+
+import { auth } from '../../../config/firebase';
+
 import Loading from "../../../components/Loading";
+import Server from "../../../service/server";
 
 type Props = {
   navigation: {
@@ -14,7 +19,6 @@ type Props = {
 
 type STATUS_MESSAGES = "LOADING" | "FAILED" | "ERROR" | "SUCCESS" | "IDLE";
 
-const auth = getAuth();
 
 export default function SignUp(props: Props) {
   const { navigation } = props;
@@ -44,8 +48,14 @@ export default function SignUp(props: Props) {
 
       setStateMessage("LOADING");
 
-      await createUserWithEmailAndPassword(auth, email, password);
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+
+      console.log(user);
+
+      // const response = await Server.createDefaultSettings(user);
+
       navigation.navigate("signin");
+      
     } catch (error: any) {
       console.log(error);
       showMessage({
@@ -99,7 +109,7 @@ export default function SignUp(props: Props) {
                 activeOpacity={0.7}
                 style={styles.googleButton}
               >
-                <Text style={styles.textButton}>Send</Text>
+                <Text style={styles.textButton}>Sign Up</Text>
               </TouchableOpacity>
             </View>
             <View>

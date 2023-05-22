@@ -1,10 +1,16 @@
 import * as React from "react";
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import { signInWithEmailLink } from 'firebase/auth';
 import { showMessage } from "react-native-flash-message";
+
+import { useStoreActions } from "easy-peasy";
+
 import styles from "./Signin.style";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { FormValidator } from "../../../helpers/FormValidator";
 import Loading from "../../../components/Loading";
+import { auth } from '../../../config/firebase';
+import { Model } from "../../../store/model";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Props = {
   navigation: {
@@ -13,8 +19,6 @@ type Props = {
 };
 
 type STATUS_MESSAGES = "LOADING" | "FAILED" | "ERROR" | "SUCCESS" | "IDLE";
-
-const auth = getAuth();
 
 export default function SignIn(props: Props) {
   const { navigation } = props;
@@ -32,6 +36,8 @@ export default function SignIn(props: Props) {
     setPassword(value);
   }
 
+  const updateUser = useStoreActions<Model>((action) => action.updateUser); 
+  const updateAccessToken = useStoreActions<Model>((action) => action.updateAccessToken);
   const handleAuth = async () => {
     try {
       if (!FormValidator.emailValidator(email)) {
@@ -44,10 +50,18 @@ export default function SignIn(props: Props) {
 
       setStateMessage("LOADING");
 
-      await signInWithEmailAndPassword(auth, email, password);
+      const { user } = await signInWithEmailLink(auth, email, 'https://google.com');
+
+      const token = await user.getIdToken();
+
+      await AsyncStorage.setItem('token', token);
+
+      updateAccessToken(token);
+
+      updateUser(user);
 
     } catch (error: any) {
-      console.log(error);
+      console.log(error.message);
       showMessage({
         message: error.message? error.message : "SOMETHING WENT WRONG, PLEASE TRY AGAIN",
         type: "danger",
@@ -99,7 +113,7 @@ export default function SignIn(props: Props) {
                 activeOpacity={0.7}
                 style={styles.googleButton}
               >
-                <Text style={styles.textButton}>Send</Text>
+                <Text style={styles.textButton}>Login</Text>
               </TouchableOpacity>
             </View>
             <View>

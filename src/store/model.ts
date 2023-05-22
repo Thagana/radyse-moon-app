@@ -1,6 +1,19 @@
 import {Action, action} from 'easy-peasy';
 
+export type User = {
+  email: string,
+  emailVerified: boolean,
+  apiKey: string,
+  createdAt: string
+  stsTokenManager:  {
+    accessToken: string,
+    tenantId: number,
+    uid: string,
+  }
+}
+
 export interface Model {
+  user: User
   isAuth: boolean;
   token: string;
   setAuthenticated: Action<Model, string>;
@@ -13,9 +26,24 @@ export interface Model {
   removeArticle: Action<Model, any>;
   removeAllArticles: Action<Model>;
   toggleTheme: Action<Model>;
+  updateUser: Action<this, User>;
+  updateAccessToken: Action<this, string>;
 }
 
+
 const model: Model = {
+  /*  USER */
+  user: {
+    email: '',
+    emailVerified: false,
+    apiKey: '',
+    createdAt: '',
+    stsTokenManager:  {
+      accessToken: '',
+      tenantId: 0,
+      uid: '',
+    }
+  },
   /* AUTHENTICATION */
   isAuth: false,
   token: '',
@@ -51,6 +79,14 @@ const model: Model = {
   toggleTheme: action(state => {
     state.isDarkMode = false;
   }),
+  updateUser: action((state, payload) => {
+    const oldState = state
+    oldState.user = payload
+  }),
+  updateAccessToken: action((state, payload) => {
+    const oldState = state
+    oldState.token = payload
+  })
 };
 
 export default model;
