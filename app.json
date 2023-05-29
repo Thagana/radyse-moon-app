@@ -2,6 +2,7 @@
   "expo": {
     "name": "radyse-moon-app",
     "slug": "radyse-moon-app",
+    "scheme": "radysemoon",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

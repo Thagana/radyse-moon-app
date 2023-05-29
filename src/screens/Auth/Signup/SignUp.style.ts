@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   Avatar: {
-    width: Platform.OS === 'ios' ? wp(60) : wp(57),
-    height: Platform.OS === 'ios' ? hp(28) : hp(30.2),
+    width: Platform.OS === 'ios' ? wp(50) : wp(47),
+    height: Platform.OS === 'ios' ? hp(18) : hp(20.2),
   },
   googleGoogleContainer: {
     flex: 1,

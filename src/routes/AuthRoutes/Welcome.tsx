@@ -16,6 +16,7 @@ export default function Welcome() {
       }}>
       <RootStack.Screen name="signin" component={SignIn} />
       <RootStack.Screen name="signup" component={SignUp} />
+      <RootStack.Screen name='verify' component={Verify} />
     </RootStack.Navigator>
   );
 }

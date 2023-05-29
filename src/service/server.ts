@@ -1,11 +1,28 @@
 import Axios from './network';
 
 class Server {
-  static async login(code: string) {
-    return Axios.post('/auth/login', {code});
+  /**
+   * Sends a POST request to '/auth/login' with the given email and password.
+   *
+   * @param {string} email - the user's email
+   * @param {string} password - the user's password
+   * @return {Promise} a Promise that resolves to the server response
+   */
+  static async login(email: string, password: string): Promise<any> {
+    return Axios.post('/auth/login', {
+      email: email,
+      password: password
+    });
   }
-  static async register(email: string, token: string) {
-    return Axios.post('/auth/register', {email, token});
+
+  static async verify(token: string) {
+    return Axios.post('/auth/verify', {
+      token: token
+    })
+  }
+
+  static async register(firstName: string, lastName: string, email: string, password: string) {
+    return Axios.post('/auth/register', {firstName, lastName, email, password});
   }
   static async checkToken(token: string) {
     return Axios.post('/auth/check', {token});

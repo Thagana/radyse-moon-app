@@ -38,7 +38,7 @@ export default function Verify(props: Props) {
     try {
       if (mounted.current) {
         setSeverMessage('LOADING');
-        const response = await Server.login(code);
+        const response = await Server.verify(code);
         const {data} = response;
         if (data.success) {
           login(data.token);

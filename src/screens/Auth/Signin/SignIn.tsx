@@ -1,16 +1,20 @@
 import * as React from "react";
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
-import { signInWithEmailLink } from 'firebase/auth';
 import { showMessage } from "react-native-flash-message";
-
 import { useStoreActions } from "easy-peasy";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// Service and Helpers
+import Server from '../../../service/server';
 
 import styles from "./Signin.style";
-import { FormValidator } from "../../../helpers/FormValidator";
+
+// Components
 import Loading from "../../../components/Loading";
-import { auth } from '../../../config/firebase';
+
+// Models
 import { Model } from "../../../store/model";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 type Props = {
   navigation: {
@@ -40,30 +44,23 @@ export default function SignIn(props: Props) {
   const updateAccessToken = useStoreActions<Model>((action) => action.updateAccessToken);
   const handleAuth = async () => {
     try {
-      if (!FormValidator.emailValidator(email)) {
+      const response = await Server.login(email, password);
+      if (!response.data.success) {
         showMessage({
-          message: "Email is not valid",
+          message: response.data.message,
           type: "danger",
-        });
-        return;
+        })
+      } else {
+        const token = response.data.data.token;
+        await AsyncStorage.setItem('token', token);
+        updateUser(response.data.data.profile);
+        updateAccessToken(token);
       }
 
-      setStateMessage("LOADING");
-
-      const { user } = await signInWithEmailLink(auth, email, 'https://google.com');
-
-      const token = await user.getIdToken();
-
-      await AsyncStorage.setItem('token', token);
-
-      updateAccessToken(token);
-
-      updateUser(user);
-
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error) {
+      console.log(error);
       showMessage({
-        message: error.message? error.message : "SOMETHING WENT WRONG, PLEASE TRY AGAIN",
+        message: "SOMETHING WENT WRONG, PLEASE TRY AGAIN",
         type: "danger",
       });
       setStateMessage("IDLE");
@@ -76,8 +73,6 @@ export default function SignIn(props: Props) {
 
   return (
     <View style={styles.container}>
-      {STATE_MESSAGE === "LOADING" && <Loading />}
-      {STATE_MESSAGE === "IDLE" && (
         <View style={styles.googleGoogleContainer}>
           <View>
             <Image
@@ -113,7 +108,12 @@ export default function SignIn(props: Props) {
                 activeOpacity={0.7}
                 style={styles.googleButton}
               >
-                <Text style={styles.textButton}>Login</Text>
+                {STATE_MESSAGE === 'LOADING' && (
+                  <Text style={styles.textButton}>Loading ...</Text>
+                )}
+                {STATE_MESSAGE === 'IDLE' && (
+                  <Text style={styles.textButton}>Login</Text>
+                )}
               </TouchableOpacity>
             </View>
             <View>
@@ -123,7 +123,6 @@ export default function SignIn(props: Props) {
             </View>
           </View>
         </View>
-      )}
     </View>
   );
 }
