@@ -44,17 +44,20 @@ export default function SignIn(props: Props) {
   const updateAccessToken = useStoreActions<Model>((action) => action.updateAccessToken);
   const handleAuth = async () => {
     try {
+      setStateMessage('LOADING');
       const response = await Server.login(email, password);
       if (!response.data.success) {
         showMessage({
           message: response.data.message,
           type: "danger",
         })
+        setStateMessage('IDLE');
       } else {
         const token = response.data.data.token;
         await AsyncStorage.setItem('token', token);
         updateUser(response.data.data.profile);
         updateAccessToken(token);
+        setStateMessage('IDLE');
       }
 
     } catch (error) {

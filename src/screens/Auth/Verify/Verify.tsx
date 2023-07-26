@@ -41,9 +41,8 @@ export default function Verify(props: Props) {
         const response = await Server.verify(code);
         const {data} = response;
         if (data.success) {
-          login(data.token);
-          await AsyncStorage.setItem('token', data.token);
           setSeverMessage('IDLE');
+          navigation.navigate('signin');
         } else {
           showMessage({
             message: response.data.message,

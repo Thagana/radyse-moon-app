@@ -71,7 +71,7 @@ export default function SignUp(props: Props) {
   };
 
   const handleNavigation = () => {
-    navigation.navigate("login");
+    navigation.navigate("signin");
   };
 
   return (

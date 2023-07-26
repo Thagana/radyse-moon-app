@@ -1,19 +1,20 @@
-import 'react-native-gesture-handler';
-import * as React from 'react';
-import {View, Text} from 'react-native';
+import "react-native-gesture-handler";
+import * as React from "react";
+import { View, Text } from "react-native";
 import {
   createStore,
   StoreProvider as Provider,
   useStoreRehydrated,
-} from 'easy-peasy';
-import FlashMessage from 'react-native-flash-message';
-import { useFonts } from 'expo-font';
+} from "easy-peasy";
+import FlashMessage from "react-native-flash-message";
+import { useFonts } from "expo-font";
+import * as Notifications from "expo-notifications";
 
-import Routes from './src/routes/Routes';
+import Routes from "./src/routes/Routes";
 
-import Store from './src/store/model';
+import Store from "./src/store/model";
 
-type Props = Provider['props'] & {children: React.ReactNode};
+type Props = Provider["props"] & { children: React.ReactNode };
 
 const StoreProviderCasted = Provider as unknown as React.ComponentType<Props>;
 
@@ -22,13 +23,13 @@ const store = createStore(Store);
 export const RootWrapper = () => {
   const isHydrated = useStoreRehydrated();
   const [fontsLoaded] = useFonts({
-    'Raleway-Black': require('./assets/fonts/Raleway-Black.ttf'),
-    'Raleway-Bold': require('./assets/fonts/Raleway-Bold.ttf'),
-    'Raleway-Light': require('./assets/fonts/Raleway-Light.ttf'),
-    'Raleway-Medium': require('./assets/fonts/Raleway-Medium.ttf'),
-    'Raleway-Regular': require('./assets/fonts/Raleway-Regular.ttf'),
-    'Raleway-SemiBold': require('./assets/fonts/Raleway-SemiBold.ttf'),
-    'Raleway-Thin': require('./assets/fonts/Raleway-Thin.ttf'),
+    "Raleway-Black": require("./assets/fonts/Raleway-Black.ttf"),
+    "Raleway-Bold": require("./assets/fonts/Raleway-Bold.ttf"),
+    "Raleway-Light": require("./assets/fonts/Raleway-Light.ttf"),
+    "Raleway-Medium": require("./assets/fonts/Raleway-Medium.ttf"),
+    "Raleway-Regular": require("./assets/fonts/Raleway-Regular.ttf"),
+    "Raleway-SemiBold": require("./assets/fonts/Raleway-SemiBold.ttf"),
+    "Raleway-Thin": require("./assets/fonts/Raleway-Thin.ttf"),
   });
   if (isHydrated) {
     return <Routes />;
@@ -41,6 +42,21 @@ export const RootWrapper = () => {
 };
 
 export default function App() {
+  const notificationListener = React.useRef<any>();
+  const responseListener = React.useRef<any>();
+  React.useEffect(() => {
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
   return (
     <StoreProviderCasted store={store}>
       <RootWrapper />

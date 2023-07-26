@@ -1,10 +1,16 @@
 import * as React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {useStoreActions} from 'easy-peasy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
 import { Ionicons } from '@expo/vector-icons';
+
 import styles from './Profile.style';
+
 import Server from '../../service/server';
+import { registerForPushNotificationsAsync } from '../../functions/registerForPushNotifications';
+import { showMessage } from 'react-native-flash-message';
+
 
 export default function ProfileStack() {
   const [serverState, setServerState] = React.useState('LOADING');
@@ -22,6 +28,17 @@ export default function ProfileStack() {
     }
   };
 
+  const requestPushToken = () => {
+    registerForPushNotificationsAsync().then(token => {
+      console.log(token);
+    }).catch(error => {
+      showMessage({
+        message: error.message,
+        type: 'danger',
+      })
+    });
+  }
+
   const fetchSettings = React.useCallback(async () => {
     try {
       setServerState('LOADING');
@@ -29,6 +46,7 @@ export default function ProfileStack() {
       if (response.status === 200) {
         if (response.data.data) {
           const {language: lng, location: loc} = response.data.data;
+          console.log(response.data.data);
           setLocation(loc);
           setLanguage(lng);
           setServerState('SUCCESS');
@@ -51,12 +69,12 @@ export default function ProfileStack() {
   return (
     <>
       {serverState === 'LOADING' && (
-        <View>
-          <Text>Loading</Text>
+        <View style={styles.container}>
+          <ActivityIndicator size="large" />
         </View>
       )}
       {serverState === 'ERROR' && (
-        <View>
+        <View style={styles.container}>
           <TouchableOpacity style={styles.listItem} onPress={handleLogOut}>
             <View style={styles.rowItems}>
               <View>
@@ -100,13 +118,13 @@ export default function ProfileStack() {
               <Ionicons name="arrow-forward" size={20} color="#000" />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.listItem} onPress={() => {}}>
+          <TouchableOpacity style={styles.listItem} onPress={requestPushToken}>
             <View style={styles.rowItems}>
               <View>
                 <Ionicons name="settings-outline" size={20} color="#000" />
               </View>
               <View style={styles.showText}>
-                <Text style={styles.listText}>Push Enabled [True]</Text>
+                <Text style={styles.listText}>Push Enabled []</Text>
               </View>
             </View>
             <View style={styles.rowAction}>
