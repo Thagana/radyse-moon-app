@@ -14,6 +14,7 @@ import Loading from "../../../components/Loading";
 
 // Models
 import { Model } from "../../../store/model";
+import { ActivityIndicator } from "react-native-paper";
 
 
 type Props = {
@@ -112,7 +113,7 @@ export default function SignIn(props: Props) {
                 style={styles.googleButton}
               >
                 {STATE_MESSAGE === 'LOADING' && (
-                  <Text style={styles.textButton}>Loading ...</Text>
+                  <ActivityIndicator size={"large"} color="#fff" />
                 )}
                 {STATE_MESSAGE === 'IDLE' && (
                   <Text style={styles.textButton}>Login</Text>

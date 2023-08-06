@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "115264037242",
+    "project_id": "radyse-moon-ae1c8",
+    "storage_bucket": "radyse-moon-ae1c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115264037242:android:98d1dff029090e8929f6c3",
+        "android_client_info": {
+          "package_name": "com.thagana.radysemoonapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115264037242-u6c9m7g8lbcaadpulbjj3a296m3sstva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIZcVzZETC5GvweHOza4TsJgDW52osyYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115264037242-83hsb63h1d8ob4qbfi00prb0bgr9642u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
