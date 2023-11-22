@@ -4,7 +4,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import {RALEWAY_REGULAR} from '../../common/fonts';
+import {RALEWAY_BOLD, RALEWAY_REGULAR} from '../../common/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
   rowItems: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 12,
+    marginHorizontal: wp(2),
   },
   rowAction: {
-    marginHorizontal: 12,
+    marginHorizontal: wp(5),
   },
   showText: {
     marginLeft: 2,
@@ -39,6 +39,25 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: RALEWAY_REGULAR,
   },
+  backgroundModal: {
+    backgroundColor: '#fff',
+  },
+  modalHeader: {
+    padding: wp(2),
+  },
+  modalHeaderText: {
+    fontFamily: RALEWAY_BOLD,
+    fontSize: wp(4),
+  },
+  modalHeaderTextBody: {
+    fontFamily: RALEWAY_REGULAR,
+    fontSize: wp(4),
+  },
+  modalControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: wp(2),
+  }
 });
 
 export default styles;

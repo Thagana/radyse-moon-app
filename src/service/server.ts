@@ -1,3 +1,4 @@
+import { Settings } from '../interface/Settings.interface';
 import Axios from './network';
 
 class Server {
@@ -58,6 +59,9 @@ class Server {
 
   static async createDefaultSettings(user: any) {
     return Axios.post('/user/default-settings', {user});
+  }
+  static async updateSettings(settings: Settings) {
+    return Axios.post('/user/settings', {...settings});
   }
 }
 
