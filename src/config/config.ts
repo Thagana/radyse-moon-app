@@ -1,5 +1,7 @@
-const config = {
-  APPLICATION_URL: 'https://5628bf3b7bc8.ngrok.app',
+import config from './secrets';
+
+const configs = {
+  APPLICATION_URL: config['API_URL_PROD'],
 };
 
-export default config;
+export default configs;
