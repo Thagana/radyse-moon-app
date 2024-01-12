@@ -9,8 +9,8 @@ type Props = {
 export default function ImageView(props: Props) {
   const {image} = props;
   return (
-    <View id={`item.${image}.image`}>
       <Image
+        id={`item.${image}.image`}
         source={
           image === null || image === ''
             ? require('../../assets/download.png')
@@ -18,6 +18,5 @@ export default function ImageView(props: Props) {
         }
         style={styles.cover}
       />
-    </View>
   );
 }

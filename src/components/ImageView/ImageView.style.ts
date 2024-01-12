@@ -6,10 +6,9 @@ import {
 
 const styles = StyleSheet.create({
   cover: {
-    width: wp(30),
-    height: hp(16),
-    borderTopLeftRadius: wp(2),
-    borderBottomLeftRadius: wp(2),
+    width: wp(26),
+    height: hp(10),
+    borderRadius: wp(2),
   },
 });
 
