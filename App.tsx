@@ -3,6 +3,7 @@ import * as React from "react";
 import { View, Text, Platform } from "react-native";
 import {
   createStore,
+  persist,
   StoreProvider as Provider,
   useStoreRehydrated,
 } from "easy-peasy";
@@ -16,34 +17,15 @@ import * as Notifications from 'expo-notifications';
 import Routes from "./src/routes/Routes";
 
 import Store from "./src/store/model";
+import storage from "./src/store/storage/storage";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Props = Provider["props"] & { children: React.ReactNode };
 
 const StoreProviderCasted = Provider as unknown as React.ComponentType<Props>;
 
-const store = createStore(Store);
-
-export const RootWrapper = () => {
-  const isHydrated = useStoreRehydrated();
-  const [fontsLoaded] = useFonts({
-    "Raleway-Black": require("./assets/fonts/Raleway-Black.ttf"),
-    "Raleway-Bold": require("./assets/fonts/Raleway-Bold.ttf"),
-    "Raleway-Light": require("./assets/fonts/Raleway-Light.ttf"),
-    "Raleway-Medium": require("./assets/fonts/Raleway-Medium.ttf"),
-    "Raleway-Regular": require("./assets/fonts/Raleway-Regular.ttf"),
-    "Raleway-SemiBold": require("./assets/fonts/Raleway-SemiBold.ttf"),
-    "Raleway-Thin": require("./assets/fonts/Raleway-Thin.ttf"),
-  });
-  if (isHydrated) {
-    return <Routes />;
-  }
-  return (
-    <View>
-      <Text>Loading ...</Text>
-    </View>
-  );
-};
+const store = createStore(persist(Store, {storage: storage}));
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -91,6 +73,16 @@ export default function App() {
   const notificationListener = React.useRef<any>();
   const responseListener = React.useRef<any>();
 
+  const [fontsLoaded] = useFonts({
+    "Raleway-Black": require("./assets/fonts/Raleway-Black.ttf"),
+    "Raleway-Bold": require("./assets/fonts/Raleway-Bold.ttf"),
+    "Raleway-Light": require("./assets/fonts/Raleway-Light.ttf"),
+    "Raleway-Medium": require("./assets/fonts/Raleway-Medium.ttf"),
+    "Raleway-Regular": require("./assets/fonts/Raleway-Regular.ttf"),
+    "Raleway-SemiBold": require("./assets/fonts/Raleway-SemiBold.ttf"),
+    "Raleway-Thin": require("./assets/fonts/Raleway-Thin.ttf"),
+  });
+
   React.useEffect(() => {
     registerForPushNotificationsAsync().then(async (token) => {
       if (token) {
@@ -112,7 +104,7 @@ export default function App() {
   }, []);
   return (
     <StoreProviderCasted store={store}>
-      <RootWrapper />
+      <Routes />
       <FlashMessage position="top" />
     </StoreProviderCasted>
   );

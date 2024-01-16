@@ -6,7 +6,9 @@ import Verify from '../../screens/Auth/Verify';
 import SignUp from '../../screens/Auth/Signup/SignUp';
 
 /** RootHomeStack */
-const RootStack = createStackNavigator();
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const RootStack = createNativeStackNavigator();
 
 export default function Welcome() {
   return (
