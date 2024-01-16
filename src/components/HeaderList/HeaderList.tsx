@@ -26,20 +26,6 @@ export default function HeaderList(props: Props) {
 
   return (
     <>
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.headerText}>Radyse Moon</Text>
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <TextInput
-          placeholder="Search"
-          onChangeText={val => setTerm(val)}
-          value={term}
-          onFocus={() => navigation.navigate('Search')}
-          style={styles.search}
-        />
-      </View>
       <View>
         {latest.length > 0 && <Text style={styles.allNews}>Latest News</Text>}
       </View>
