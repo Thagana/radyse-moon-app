@@ -61,33 +61,9 @@ const Search = (props: Props) => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.search}>
-        <TextInput
-          placeholder="Search"
-          onChangeText={val => setterm(val)}
-          value={term}
-          autoFocus
-          style={styles.textInput}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <AntDesign name="search1" color="#fff" size={widthPercentageToDP(10)} />
-        </TouchableOpacity>
+      <View style={styles.unavailable}>
+        <Text style={styles.unavailableText}>Not available yet</Text>
       </View>
-      {SERVER_STATE === 'LOADING' && <Loading />}
-      {SERVER_STATE === 'ERROR' && (
-        <View>
-          <Text>Something went wrong please try again</Text>
-        </View>
-      )}
-      {SERVER_STATE === 'SUCCESS' && (
-        <FlatList
-          data={articles}
-          renderItem={({item}) => (
-            <Article item={item} isDownload={false} navigation={navigation} />
-          )}
-          keyExtractor={(_, index) => 'key-' + index}
-        />
-      )}
     </SafeAreaView>
   );
 };

@@ -4,6 +4,7 @@ import {
 } from 'react-native-responsive-screen';
 
 import {StyleSheet} from 'react-native';
+import { RALEWAY_REGULAR } from '../../common/fonts';
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
@@ -34,6 +35,15 @@ const styles = StyleSheet.create({
   fireText: {
     color: '#FFF',
   },
+  unavailable: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  unavailableText: {
+    fontFamily: RALEWAY_REGULAR,
+    fontSize: wp(5),
+  }
 });
 
 export default styles;

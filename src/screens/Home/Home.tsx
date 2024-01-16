@@ -165,8 +165,6 @@ const Home = (props: Props) => {
     };
   }, []);
 
-  // ref
-
   // variables
   const snapPoints = React.useMemo(() => ["25%", "50%"], []);
 

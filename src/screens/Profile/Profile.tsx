@@ -1,11 +1,20 @@
 import * as React from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, Platform, Alert, Switch } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  Platform,
+  Alert,
+  Switch,
+  Modal,
+} from "react-native";
 
 import { useStoreActions } from "easy-peasy";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import CountryPicker, { CountryCode, Country } from "react-native-country-picker-modal";
+import { CountryCode, Country } from "react-native-country-picker-modal";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
@@ -18,14 +27,13 @@ import { registerForPushNotificationsAsync } from "../../functions/registerForPu
 
 import { showMessage } from "react-native-flash-message";
 import { Settings } from "../../interface/Settings.interface";
-import { Modal } from "react-native-paper";
-
 
 export default function ProfileStack() {
   const [serverState, setServerState] = React.useState<string>("LOADING");
   const [countryCode, setCountryCode] = React.useState<CountryCode>("FR");
   const [visible, setVisible] = React.useState<boolean>(false);
-  const [emailNotificationModalVisible, setEmailNotificationModalVisible] = React.useState(false);
+  const [emailNotificationModalVisible, setEmailNotificationModalVisible] =
+    React.useState(false);
 
   const [settings, setSettings] = React.useState<Settings>({
     category: "",
@@ -88,20 +96,20 @@ export default function ProfileStack() {
     setSettings({
       ...settings,
       location: country.cca2,
-    })
+    });
   };
 
   const requestWebPushNotification = () => {
-    if (Platform.OS === 'web') {
+    if (Platform.OS === "web") {
       // Do something
     } else {
-      Alert.alert('Not supported on your platform');
+      Alert.alert("Not supported on your platform");
     }
-  }
+  };
 
   const requestEmailNotification = async () => {
     setEmailNotificationModalVisible(true);
-  }
+  };
 
   const updateSettings = async () => {
     try {
@@ -112,7 +120,7 @@ export default function ProfileStack() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <>
@@ -165,14 +173,7 @@ export default function ProfileStack() {
               </View>
               <View style={styles.showText}>
                 <Text style={styles.listText}>
-                  News location
-                  [<CountryPicker
-                    withEmoji={false}
-                    withFilter={true}
-                    countryCode={settings.location}
-                    visible={visible}
-                    onSelect={handleSelectFlag}
-                  />]
+                  News location [{settings.location}]
                 </Text>
               </View>
             </View>
@@ -195,7 +196,10 @@ export default function ProfileStack() {
               <Ionicons name="arrow-forward" size={20} color="#000" />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.listItem} onPress={requestWebPushNotification}>
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={requestWebPushNotification}
+          >
             <View style={styles.rowItems}>
               <View>
                 <Foundation name="web" size={20} color="#000" />
@@ -211,7 +215,10 @@ export default function ProfileStack() {
               <Ionicons name="arrow-forward" size={20} color="#000" />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.listItem} onPress={requestEmailNotification}>
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={requestEmailNotification}
+          >
             <View style={styles.rowItems}>
               <View>
                 <MaterialCommunityIcons
@@ -253,23 +260,51 @@ export default function ProfileStack() {
           setEmailNotificationModalVisible(false);
         }}
       >
-        <View style={styles.backgroundModal}>
-          <View style={styles.modalHeader}>
-          <Text style={styles.modalHeaderText}>Email Notification</Text>
-          <Text style={styles.modalHeaderTextBody}>You can update whether you would like to receive email notification when news articles are received on our system</Text>
-          </View>
-          <View style={styles.modalControls}>
-            <Text>Email Notification</Text>
-            <Switch 
-              value={settings.email_notification ? true : false}
-              thumbColor={settings.email_notification  ? '#f5dd4b' : '#f4f3f4'}
-              onValueChange={(value) => {
-                setSettings({
-                  ...settings,
-                  email_notification: value ? 1 : 0
-                })
-             }}
-            />
+        <View style={{
+          padding: 20,
+          marginTop: 20,
+        }}>
+          <View style={styles.backgroundModal}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                padding: 10,
+              }}
+            >
+              <View>
+                <Ionicons
+                  name="close-outline"
+                  size={30}
+                  color="#000"
+                  onPress={() => {
+                    updateSettings();
+                    setEmailNotificationModalVisible(false);
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalHeaderText}>Email Notification</Text>
+              <Text style={styles.modalHeaderTextBody}>
+                If you would like to receive email notifications from Radyse, 
+                accept the teams and you will be notified when new new articles and received
+              </Text>
+            </View>
+            <View style={styles.modalControls}>
+              <Text style={styles.modalTermsAndConditions}>Accept email notification</Text>
+              <Switch
+                value={settings.email_notification ? true : false}
+                thumbColor={settings.email_notification ? "#f5dd4b" : "#f4f3f4"}
+                onValueChange={(value) => {
+                  setSettings({
+                    ...settings,
+                    email_notification: value ? 1 : 0,
+                  });
+                }}
+              />
+            </View>
           </View>
         </View>
       </Modal>
