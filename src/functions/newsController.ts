@@ -1,4 +1,4 @@
-import Server from '../service/server';
+import Server from "../service/server";
 
 /**
  *
@@ -11,7 +11,7 @@ export const getAllNews = async (page: number, size: number) => {
     const response = await Server.getAllNews(page, size);
     if (response.status === 200) {
       const responseData = response.data;
-      const {data, success} = responseData;
+      const { data, success } = responseData;
 
       if (success) {
         return {
@@ -39,42 +39,17 @@ export const getAllNews = async (page: number, size: number) => {
 };
 
 export const getSearchedNews = async (query: string) => {
-  try {
-    const response = await Server.searchNews(query);
-    if (response.status === 200) {
-      const responseData = response.data;
-      const {data, success} = responseData;
-      if (success) {
-        return {
-          success: true,
-          data,
-        };
-      }
-      return {
-        success: false,
-        data: [],
-      };
-    }
-
-    return {
-      success: false,
-      data: [],
-    };
-  } catch (error) {
-    return {
-      success: false,
-      data: [],
-    };
-  }
+  const response = await Server.searchNews(query);
+  return response;
 };
 
 export const headLineNews = () => {
-  return new Promise<{data: any[]; success: boolean}>((resolve, reject) => {
+  return new Promise<{ data: any[]; success: boolean }>((resolve, reject) => {
     Server.headlines()
-      .then(response => {
-        const {data, success} = response.data;
-        resolve({data, success});
+      .then((response) => {
+        const { data, success } = response.data;
+        resolve({ data, success });
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };

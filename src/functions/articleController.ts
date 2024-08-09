@@ -34,7 +34,8 @@ export class Store {
     if ((await AsyncStorage.getItem('articles')) === null) {
       articles = [];
     } else {
-      articles = JSON.parse((await AsyncStorage.getItem('articles')) || '');
+      const jsonArticles = await AsyncStorage.getItem('articles');
+      articles = JSON.parse(jsonArticles || '');
     }
     return articles;
   }
