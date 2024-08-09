@@ -6,10 +6,7 @@ import {
   ActivityIndicator,
   Switch,
   Modal,
-  Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { match, P } from "ts-pattern";
 
 import { useStoreActions } from "easy-peasy";
 
@@ -20,8 +17,6 @@ import { Ionicons } from "@expo/vector-icons";
 import styles from "./Profile.style";
 
 import Server from "../../service/server";
-
-import { Settings } from "../../interface/Settings.interface";
 
 type Props = {
   route: () => void;
@@ -40,9 +35,8 @@ export default function ProfileStack({ route, navigation }: Props) {
 
   const handleLogOut = async () => {
     try {
-      logOut();
       await AsyncStorage.removeItem("token");
-      navigation.navigate("signin");
+      logOut();
     } catch (error) {
       console.log(error);
     }
@@ -91,12 +85,7 @@ export default function ProfileStack({ route, navigation }: Props) {
     fetchProfile();
   }, [fetchSettings, fetchProfile]);
 
-  const updateSettings = async () => {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
 
   return (
     <>
@@ -122,17 +111,9 @@ export default function ProfileStack({ route, navigation }: Props) {
           </TouchableOpacity>
         </View>
       )}
-      {serverState === "SUCCESS" && (
-        <View>
-          <View>
-            <View></View>
-          </View>
-        </View>
-      )}
       <Modal
         visible={emailNotificationModalVisible}
         onDismiss={() => {
-          updateSettings();
           setEmailNotificationModalVisible(false);
         }}
       >
@@ -157,7 +138,6 @@ export default function ProfileStack({ route, navigation }: Props) {
                   size={30}
                   color="#000"
                   onPress={() => {
-                    updateSettings();
                     setEmailNotificationModalVisible(false);
                   }}
                 />

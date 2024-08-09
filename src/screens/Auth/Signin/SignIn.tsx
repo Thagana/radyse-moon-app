@@ -3,7 +3,6 @@ import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { useStoreActions } from "easy-peasy";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ActivityIndicator } from "react-native-paper";
 
 // Service and Helpers
 import Server from "../../../service/server";
@@ -42,6 +41,10 @@ export default function SignIn(props: Props) {
     navigation.navigate("forgot-password");
   };
 
+  const handleRegisterRoute = () => {
+    navigation.navigate("signup");
+  };
+
   const handleEmailChange = (value: string) => {
     setEmail(value);
   };
@@ -77,10 +80,6 @@ export default function SignIn(props: Props) {
     }
   };
 
-  const handleNavigation = () => {
-    navigation.navigate("signup");
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.signContainer}>
@@ -114,11 +113,11 @@ export default function SignIn(props: Props) {
         </View>
         <TouchableOpacity
           style={styles.linkContainer}
-          onPress={handleNavigation}
+          onPress={handleNavigate}
         >
           <Text style={styles.link}>Forgot Password? Changed password</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNavigation}>
+        <TouchableOpacity onPress={handleRegisterRoute}>
           <Text style={styles.signUp}>Sign Up?</Text>
         </TouchableOpacity>
       </View>
