@@ -69,6 +69,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  viewPassword: {
+      justifyContent: "flex-end",
+      alignItems: "flex-end",
+      position: "relative",
+      top: -55,
+      right: -130,
+  }
 });
 
 export default styles;
