@@ -17,10 +17,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: hp(7),
-    marginHorizontal: wp(1),
     borderRadius: wp(2),
     backgroundColor: '#fff',
     marginVertical: wp(1),
+    marginHorizontal: wp(3),
+    padding: wp(2)
   },
   rowItems: {
     flexDirection: 'row',

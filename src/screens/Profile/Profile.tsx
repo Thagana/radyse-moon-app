@@ -4,8 +4,7 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
-  Switch,
-  Modal,
+  Image,
 } from "react-native";
 
 import { useStoreActions } from "easy-peasy";
@@ -18,6 +17,8 @@ import styles from "./Profile.style";
 
 import Server from "../../service/server";
 
+import { useQuery } from "@tanstack/react-query";
+
 type Props = {
   route: () => void;
   navigation: {
@@ -26,10 +27,15 @@ type Props = {
 };
 
 export default function ProfileStack({ route, navigation }: Props) {
-  const [serverState, setServerState] = React.useState<string>("LOADING");
-  const [emailNotificationModalVisible, setEmailNotificationModalVisible] =
-    React.useState(false);
-  const [profile, setProfile] = React.useState();
+  const { isPending, error, data, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      return await Server.getProfile();
+    },
+    staleTime: 5 * 1000,
+  });
+
+  console.log(data?.data);
 
   const logOut = useStoreActions<any, any>((action) => action.logOut);
 
@@ -42,60 +48,50 @@ export default function ProfileStack({ route, navigation }: Props) {
     }
   };
 
-  const fetchProfile = React.useCallback(async () => {
-    try {
-      setServerState("LOADING");
-      const response = await Server.getProfile();
-      if (response.status === 200) {
-        if (response.data.data) {
-          setProfile(response.data.data);
-          setServerState("SUCCESS");
-        } else {
-          setServerState("ERROR");
-        }
-      } else {
-        setServerState("ERROR");
-      }
-    } catch (error) {
-      console.log(error);
-      setServerState("ERROR");
-    }
-  }, []);
-  const fetchSettings = React.useCallback(async () => {
-    try {
-      setServerState("LOADING");
-      const response = await Server.getSettings();
-      if (response.status === 200) {
-        if (response.data.data) {
-          setServerState("SUCCESS");
-        } else {
-          setServerState("ERROR");
-        }
-      } else {
-        setServerState("ERROR");
-      }
-    } catch (error) {
-      console.log(error);
-      setServerState("ERROR");
-    }
-  }, []);
-
-  React.useEffect(() => {
-    fetchSettings();
-    fetchProfile();
-  }, [fetchSettings, fetchProfile]);
-
-  
-
   return (
     <>
-      {serverState === "LOADING" && (
+      {(isPending || isLoading) && (
         <View style={styles.container}>
           <ActivityIndicator size="large" />
         </View>
       )}
-      {serverState === "ERROR" && (
+      {data && (
         <View style={styles.container}>
+          <View style={{ alignItems: "center" }}>
+            <Image
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+                marginBottom: 20,
+              }}
+              source={{ uri: data.data.data.avatar }}
+            />
+          </View>
+          <TouchableOpacity style={styles.listItem}>
+            <View style={styles.rowItems}>
+              <View>
+                <Ionicons name="information-outline" size={20} color="#000" />
+              </View>
+              <View style={styles.showText}>
+                <Text>{data.data.data.firstName} {data.data.data.lastName}</Text>
+              </View>
+            </View>
+            <View style={styles.rowAction}>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.listItem}>
+            <View style={styles.rowItems}>
+              <View>
+                <Ionicons name="information-outline" size={20} color="#000" />
+              </View>
+              <View style={styles.showText}>
+                <Text>{data.data.data.email}</Text>
+              </View>
+            </View>
+            <View style={styles.rowAction}>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.listItem} onPress={handleLogOut}>
             <View style={styles.rowItems}>
               <View>
@@ -111,55 +107,11 @@ export default function ProfileStack({ route, navigation }: Props) {
           </TouchableOpacity>
         </View>
       )}
-      <Modal
-        visible={emailNotificationModalVisible}
-        onDismiss={() => {
-          setEmailNotificationModalVisible(false);
-        }}
-      >
-        <View
-          style={{
-            padding: 20,
-            marginTop: 20,
-          }}
-        >
-          <View style={styles.backgroundModal}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                padding: 10,
-              }}
-            >
-              <View>
-                <Ionicons
-                  name="close-outline"
-                  size={30}
-                  color="#000"
-                  onPress={() => {
-                    setEmailNotificationModalVisible(false);
-                  }}
-                />
-              </View>
-            </View>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalHeaderText}>Email Notification</Text>
-              <Text style={styles.modalHeaderTextBody}>
-                If you would like to receive email notifications from Radyse,
-                accept the teams and you will be notified when new new articles
-                and received
-              </Text>
-            </View>
-            <View style={styles.modalControls}>
-              <Text style={styles.modalTermsAndConditions}>
-                Accept email notification
-              </Text>
-              <Switch onValueChange={(value) => {}} />
-            </View>
-          </View>
+      {error && (
+        <View style={[styles.container, { alignItems: "center" }]}>
+          <Text style={{ fontWeight: "bold" }}>Something went wrong</Text>
         </View>
-      </Modal>
+      )}
     </>
   );
 }
