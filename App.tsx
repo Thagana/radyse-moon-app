@@ -1,18 +1,15 @@
 import "react-native-gesture-handler";
 import * as React from "react";
-import { View, Text, Platform } from "react-native";
-import {
-  createStore,
-  persist,
-  StoreProvider as Provider,
-  useStoreRehydrated,
-} from "easy-peasy";
+import { Platform } from "react-native";
+import { createStore, persist, StoreProvider as Provider } from "easy-peasy";
 import FlashMessage from "react-native-flash-message";
 import { useFonts } from "expo-font";
-
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
-
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 
 import Routes from "./src/routes/Routes";
 
@@ -25,7 +22,7 @@ type Props = Provider["props"] & { children: React.ReactNode };
 
 const StoreProviderCasted = Provider as unknown as React.ComponentType<Props>;
 
-const store = createStore(persist(Store, {storage: storage}));
+const store = createStore(persist(Store, { storage: storage }));
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -35,41 +32,49 @@ Notifications.setNotificationHandler({
   }),
 });
 
+async function registerForPushNotificationsAsync(): Promise<
+  string | undefined
+> {
+  try {
+    let token;
 
-async function registerForPushNotificationsAsync(): Promise<string | undefined> {
-  let token;
-
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+      });
     }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
+
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+      token = (
+        await Notifications.getExpoPushTokenAsync({
+          projectId: "85a5e1c1-98e4-406c-a93c-cf632d5652d7",
+        })
+      ).data;
+    } else {
+      alert("Must use physical device for Push Notifications");
     }
-    token = (await Notifications.getExpoPushTokenAsync({
-      projectId: '85a5e1c1-98e4-406c-a93c-cf632d5652d7'
-    })).data;
-  } else {
-    alert('Must use physical device for Push Notifications');
+    return token;
+  } catch (error) {
+    console.log(error);
   }
-  return token;
 }
 
-export default function App() {
+const queryClient = new QueryClient();
 
+export default function App() {
   const notificationListener = React.useRef<any>();
   const responseListener = React.useRef<any>();
 
@@ -86,26 +91,32 @@ export default function App() {
   React.useEffect(() => {
     registerForPushNotificationsAsync().then(async (token) => {
       if (token) {
-        await AsyncStorage.setItem('pushToken', token);
+        await AsyncStorage.setItem("pushToken", token);
       }
     });
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log('Listen for token', notification);
-    });
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        console.log("Listen for notification:", notification);
+      });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('Listen for notification', response);
-    });
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("Listen for notification:", response);
+      });
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
   return (
-    <StoreProviderCasted store={store}>
-      <Routes />
-      <FlashMessage position="top" />
-    </StoreProviderCasted>
+    <QueryClientProvider client={queryClient}>
+      <StoreProviderCasted store={store}>
+        <Routes />
+        <FlashMessage position="top" />
+      </StoreProviderCasted>
+    </QueryClientProvider>
   );
 }

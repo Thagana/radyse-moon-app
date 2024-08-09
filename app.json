@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "radyse-moon-app",
+    "name": "Radyse Moon",
     "slug": "radyse-moon-app",
     "scheme": "radysemoon",
     "version": "1.0.0",
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#7500AC"
     },
     "assetBundlePatterns": [
       "**/*"

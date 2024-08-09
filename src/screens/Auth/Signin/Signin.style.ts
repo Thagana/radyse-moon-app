@@ -1,55 +1,73 @@
-import {StyleSheet, Platform} from 'react-native';
+import { StyleSheet, Platform } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+} from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
-  Avatar: {
-    width: Platform.OS === 'ios' ? wp(60) : wp(57),
-    height: Platform.OS === 'ios' ? hp(28) : hp(30.2),
+  signContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 450,
   },
-  googleGoogleContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+  logoContainer: {
+    marginBottom: 50,
+    // Add logo styles here
   },
-  textInput: {
-    borderColor: '#000',
-    borderWidth: wp(0.4),
-    borderRadius: wp(1),
-    width: wp(80),
-    height: hp(8),
-    padding: wp(4),
-    margin: wp(1),
-    color: '#000',
+  logo: {
+    width: wp(40.8),
+    height: hp(20),
   },
-  googleButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#24a0ed',
-    width: wp(80),
-    height: hp(8),
-    borderRadius: wp(1),
-    margin: wp(1),
+  input: {
+    width: "80%",
+    height: 50,
+    backgroundColor: "#fff",
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  textButton: {
-    color: '#fff',
-    fontSize: wp(4),
+  button: {
+    width: "80%",
+    height: 50,
+    backgroundColor: "#007bff",
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
   },
-  verifyCode: {
-    textDecorationStyle: 'solid',
-    textDecorationColor: '#000',
-    textDecorationLine: 'underline',
-    margin: wp(1),
-    fontSize: wp(4),
-    color: '#000',
+  buttonContainer: {
+    width: wp(95),
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  linkContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "80%",
+    marginBottom: 20,
+  },
+  link: {
+    color: "#007bff",
+    fontSize: 14,
+  },
+  signUp: {
+    color: "#007bff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

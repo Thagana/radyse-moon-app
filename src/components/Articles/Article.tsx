@@ -3,7 +3,7 @@ import { View, Image , Text, TouchableOpacity, Pressable } from "react-native";
 import moment from "moment";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import BottomSheet from '@gorhom/bottom-sheet';
+import { showMessage } from "react-native-flash-message";
 
 import ImageView from "../ImageView";
 
@@ -68,7 +68,7 @@ const Article = (props: Props) => {
   }, [fetchThumb]);
 
   return (
-    <TouchableOpacity style={styles.card} onPress={handleNavigate}>
+    <Pressable style={styles.card}>
       <View style={styles.content}>
         <View style={styles.contentTextContainer}>
           <View style={styles.sourceHeader}>
@@ -101,7 +101,12 @@ const Article = (props: Props) => {
       <View style={styles.imageContainer}>
         <ImageView image={urlToImage} />
         <View style={styles.controlIcons}>
-          <Pressable onPress={() => {}}>
+          <Pressable onPress={() => {
+            showMessage({
+              message: "Not yet available",
+              type: "info",
+            })
+          }}>
             <FontAwesome name="newspaper-o" size={14} color="#000000" />
           </Pressable>
           <Pressable onPress={handlePresentModalPress}>
@@ -109,7 +114,7 @@ const Article = (props: Props) => {
           </Pressable>
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

@@ -48,10 +48,16 @@ const styles = StyleSheet.create({
   modalHeaderText: {
     fontFamily: RALEWAY_BOLD,
     fontSize: wp(4),
+    padding: wp(1)
   },
   modalHeaderTextBody: {
     fontFamily: RALEWAY_REGULAR,
     fontSize: wp(4),
+    padding: wp(1)
+  },
+  modalTermsAndConditions: {
+    padding: wp(1),
+    fontFamily: RALEWAY_REGULAR,
   },
   modalControls: {
     flexDirection: 'row',

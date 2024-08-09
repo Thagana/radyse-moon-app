@@ -20,6 +20,11 @@ export default function App() {
     <NavigationContainer
       linking={{
         prefixes: [prefix],
+        config: {
+          screens: {
+            Home: "home",
+          },
+        },
         async getInitialURL() {
           const url = await Linking.getInitialURL();
           if (url != null) {
