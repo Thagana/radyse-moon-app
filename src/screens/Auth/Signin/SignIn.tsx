@@ -3,6 +3,7 @@ import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { useStoreActions } from "easy-peasy";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 // Service and Helpers
 import Server from "../../../service/server";
@@ -31,7 +32,7 @@ export default function SignIn(props: Props) {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
+  const [viewPassword, setViewPassword] = React.useState(true); // [setViewPassword]
   const updateUser = useStoreActions<Model>((action) => action.updateUser);
   const updateAccessToken = useStoreActions<Model>(
     (action) => action.updateAccessToken,
@@ -80,6 +81,10 @@ export default function SignIn(props: Props) {
     }
   };
 
+  const handleToggleView = () => {
+    setViewPassword(!viewPassword);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.signContainer}>
@@ -101,8 +106,14 @@ export default function SignIn(props: Props) {
           placeholder="Enter Password"
           placeholderTextColor="#777"
           onChangeText={handlePasswordChange}
-          secureTextEntry
+          secureTextEntry={viewPassword}
+          autoCapitalize="none"
         />
+        <View style={styles.viewPassword}>
+          <TouchableOpacity onPress={handleToggleView}>
+            <Ionicons name={viewPassword ? "eye-off-outline" : "eye-outline"} size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <View style={styles.buttonContainer}>
           <Button
             onPressCallBack={handleAuth}

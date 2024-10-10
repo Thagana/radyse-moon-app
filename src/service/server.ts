@@ -1,4 +1,5 @@
 import { Settings } from "../interface/Settings.interface";
+import { User } from "../interface/User..interface";
 import Axios from "./network";
 
 class Server {
@@ -22,7 +23,7 @@ class Server {
   }
 
   static async getProfile() {
-    return Axios.get("/profile");
+    return Axios.get<User>("/user/profile");
   }
 
   static async verify(token: string) {

@@ -223,6 +223,7 @@ const Home = (props: Props) => {
           index={1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
+          enableDismissOnClose
         >
           <View style={styles.bottomModalListContainer}>
             <View style={styles.bottomModalList}>
